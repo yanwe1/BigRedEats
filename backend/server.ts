@@ -1,32 +1,38 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp, applicationDefault, cert } from "firebase-admin/app";
-import { getFirestore } from 'firebase-admin/firestore';
-// import serviceAccount from "./serviceAccountKey.json";
+import path from "path";
+import express, { Express } from "express";
+import cors from "cors";
+import fetch from "node-fetch";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+const app: Express = express();
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCnDk8m_Css_cooyDN8QxoycQI3_zLh0WQ", 
-  authDomain: "final-project-74749.firebaseapp.com",
-  projectId: "final-project-74749",
-  storageBucket: "final-project-74749.firebasestorage.app",
-  messagingSenderId: "1008006262930",
-  appId: "1:1008006262930:web:a3f10707cedafb9aa1f64b"
-};
+const hostname = "0.0.0.0";
+const port = 8080;
+
+app.use(cors());
+app.use(express.json());
 
 
-// export firebase instances for easy access
-// const db = getFirestore();
-// const auth = firebase.auth(); // authentification?
 
-// export { db, auth }
+app.get("/weather", async (req, res) => {
+    console.log("GET /api/weather was called");
+    try {
+        const response = await fetch(
+            "https://api.open-meteo.com/v1/forecast?latitude=40.7411&longitude=73.9897&current=precipitation&temperature_unit=fahrenheit&windspeed_unit=mph&timezone=America%2FNew_York&forecast_days=1"
+        );
+        const data = (await response.json()) as WeatherData;
+        const output: WeatherResponse = {
+            raining: data.current.precipitation > 0.5,
+        };
+        res.json(output);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+});
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+app.listen(port, hostname, () => {
+    console.log("Listening");
+});
 
-// export firebase instances for easy access
-const db = getFirestore(app);
 
-export { db };
+// Copy template (similar to og weather)

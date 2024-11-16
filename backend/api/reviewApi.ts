@@ -1,5 +1,5 @@
 //import { db } from '../firebaseConfig';
-import { db } from '../server.ts';
+import { db } from '../firebase.ts';
 import * as firebase from 'firebase-admin';
 
 // add a new review to firestore dynamically using eateryId parameter

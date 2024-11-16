@@ -29,28 +29,51 @@ const Review: React.FC<ReviewForm> = ({ eateryId, onReviewSubmit }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Name"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-            />
-            <textarea
-                placeholder = "Review..."
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-            />
-            <input
-                type="number"
-                placeholder="Rating 0-5 stars"
-                value={rating}
-                onChange={(e) => setRating(Number(e.target.value))}
-            min="0"
-            max="5"
-           />       
-        <button type="submit">Submit review</button>
-     </form>
+        <div>
+            <center>
+                <h1 style={{ color: '#FF1493'}}>Review Submission!</h1>
+            </center>
+        
+            <div className="review-container">
+                <h2>Submit Your Review</h2>
+                <form onSubmit={handleSubmit} className="review-form">
+                    <div className="form-group">
+                        <label htmlFor="userName">Your Name</label>
+                        <input
+                            type="text"
+                            value={userName}
+                            onChange={(e) => setUserName(e.target.value)}
+                            placeholder="Name..."
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="comment">Review</label>
+                        <textarea
+                            id="comment"
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                            placeholder="Review..."
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="rating">Rating (0-5)</label>
+                        <input
+                            type="number"
+                            id="rating"
+                            value={rating}
+                            onChange={(e) => setRating(Number(e.target.value))}
+                            placeholder="Rating"
+                            min="0"
+                            max="5"
+                            required
+                        />
+                    </div>
+
+                <button type="submit">Submit Review</button>
+            </form>
+        </div>
+        </div>
     );
 };
 
