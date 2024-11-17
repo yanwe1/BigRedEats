@@ -1,4 +1,4 @@
-import { db } from '../server';
+import { db } from '../firebase';
 
 // get morrison details by id
 export const getEateryDetails = async (eateryId: string) => {
