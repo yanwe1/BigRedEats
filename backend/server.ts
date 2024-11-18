@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 
-app.get("/weather", async (req, res) => {
+app.get("/eateryInfo", async (req, res) => {
     console.log("GET /api/weather was called");
     try {
         const response = await fetch(
