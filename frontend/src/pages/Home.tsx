@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { signInWithGoogle } from '../util/firebase'; 
+
+<Button onClick={signInWithGoogle}>Sign In</Button>;
 
 
 interface Eatery {

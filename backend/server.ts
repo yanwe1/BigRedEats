@@ -15,7 +15,6 @@ const port = 8080;
 app.use(cors());
 app.use(express.json());
 
-
 app.get("/api/eateryDetails/:eateryId", async (req, res) => {
   console.log("[GET] entering 'eateryDetails/:eateryId' endpoint");
   const eateryId: string = req.params.eateryId;
@@ -32,6 +31,7 @@ app.get("/api/eateryDetails/:eateryId", async (req, res) => {
         message: `SUCCESS retrieved eatery with eateryId: ${eateryId} from the eatery collection in Firestore`,
         data: eateryDetails,
       });
+>>>>>>> 17afd207b7a4207f483d47d03c251e213c7cfed8
     }
   } catch (err) {
     res.status(500).json({
