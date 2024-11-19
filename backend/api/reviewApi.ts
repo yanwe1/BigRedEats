@@ -1,9 +1,15 @@
 //import { db } from '../firebaseConfig';
-import { db } from '../firebase.ts';
+import { db } from '../firebase';
 import * as firebase from 'firebase-admin';
 
+export interface ReviewForm {
+    rating: number;
+    comment: string;
+    userId: string;
+  }
+
 // add a new review to firestore dynamically using eateryId parameter
-export const addReview = async (eateryId, reviewData) => {
+export const addReview = async (eateryId : string, reviewData : ReviewForm) => {
     try {
         // create a new document in the 'reviews' collection
         const reviewRef = db.collection('reviews').doc();
@@ -44,7 +50,7 @@ export const deleteReview = async (review: string) => {
 };
 
 // update a review in firestore by review
-export const updateReview = async (review, updateData) => {
+export const updateReview = async (review : string, updateData : ReviewForm) => {
     try {
         // reference to the specific review document in the 'reviews' collection
         const reviewRef = db.collection('reviews').doc(review);
