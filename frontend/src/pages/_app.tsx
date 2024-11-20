@@ -1,5 +1,5 @@
 // other imports
-import AuthUserProvider from '../components/auth/AuthUserProvider';
+import AuthUserProvider from '../../../backend/AuthUserProvider';
 
 function App({ Component, pageProps }: AppProps) {
   return (

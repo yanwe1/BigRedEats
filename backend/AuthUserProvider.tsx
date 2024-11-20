@@ -1,6 +1,6 @@
 // other imports
 import { WrappedComponentProps } from 'react-with-firebase-auth';
-import { createComponentWithAuth } from '../../util/firebase';
+import { createComponentWithAuth } from '../backend/firebase';
 
 type AuthData = Omit<WrappedComponentProps, 'user'> & {
   user?: User | null;
