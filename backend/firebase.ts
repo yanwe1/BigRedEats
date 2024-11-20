@@ -2,6 +2,9 @@
 import { initializeApp, applicationDefault, cert } from "firebase-admin/app";
 import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from "firebase/auth";
+import withFirebaseAuth from 'react-with-firebase-auth';
+import { GoogleAuthProvider } from "firebase/auth";
+
 
 import serviceAccount from "./service_account.json";
 
@@ -16,7 +19,7 @@ const firebaseConfig = {
   projectId: "final-project-74749",
   storageBucket: "final-project-74749.firebasestorage.app",
   messagingSenderId: "1008006262930",
-  appId: "1:1008006262930:web:a3f10707cedafb9aa1f64b"x
+  appId: "1:1008006262930:web:a3f10707cedafb9aa1f64b"
 };
 
 // const app = admin.initializeApp({
@@ -32,7 +35,9 @@ const auth = getAuth(app);
 // export firebase instances for easy access
 const db = getFirestore(app);
 
+
+
 export { 
   db,
-  auth
+  auth,
  };

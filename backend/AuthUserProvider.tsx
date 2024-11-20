@@ -1,6 +1,7 @@
 // other imports
 import { WrappedComponentProps } from 'react-with-firebase-auth';
-import { createComponentWithAuth } from '../backend/firebase';
+import { User } from "firebase/auth";
+import { createContext, useContext } from "react";
 
 type AuthData = Omit<WrappedComponentProps, 'user'> & {
   user?: User | null;
@@ -12,7 +13,7 @@ const AuthUserProvider: FC<WrappedComponentProps> = ({ children, ...auth }) => (
   <AuthUserContext.Provider value={auth}>{children}</AuthUserContext.Provider>
 );
 
-export default createComponentWithAuth(AuthUserProvider);
+
 
 export const useAuth = () => {
   const context = useContext(AuthUserContext);

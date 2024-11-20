@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams} from 'react-router-dom';
 import Review from './Review';
-import { db } from './firebase';
+import { db } from '../../../backend/firebase';
 //import { getEateryDetails } from ;
 
 
