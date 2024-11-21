@@ -1,36 +1,20 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from 'firebase-admin/firestore';
-import { getAuth } from "firebase/auth";
+import { getAuth } from "firebase-admin/auth";
 import { ServiceAccount } from "firebase-admin";
-import serviceAccount from "./service_account.json";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+var admin = require("firebase-admin");
 
-// Your web app's Firebase configurationx
+var serviceAccount = require("./service_account.json");
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCnDk8m_Css_cooyDN8QxoycQI3_zLh0WQ", 
-//   authDomain: "final-project-74749.firebaseapp.com",
-//   projectId: "final-project-74749",
-//   storageBucket: "final-project-74749.firebasestorage.app",
-//   messagingSenderId: "1008006262930",
-//   appId: "1:1008006262930:web:a3f10707cedafb9aa1f64b"
-// };
-
-// const app = admin.initializeApp({
-//   credential: cert(serviceAccount as ServiceAccount)
-//   databaseURL: 'https://final-project-74749.firebaseio.com'
-// });
-// Initialize Firebase
-// const app = 
-initializeApp({
-  credential: cert(serviceAccount as ServiceAccount),
+// initialize firebase
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount as ServiceAccount),
 });
 
 // Initialize Firebase Auth
-const auth = getAuth();
+const auth = getAuth(); 
 
 // export firebase instances for easy access
 const db = getFirestore();
