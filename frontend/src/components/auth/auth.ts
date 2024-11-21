@@ -1,5 +1,6 @@
 import { auth } from "./firebaseConfig";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 
 const provider = new GoogleAuthProvider();
 
@@ -12,14 +13,20 @@ export const signIn = async () => {
     console.log(user);
 
     return { token, user };
-  } catch (error: any) {
-    const code = error.code;
-    const message = error.message;
-    const email = error.custonData.email;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      const firebaseError = error as FirebaseError;
+      const code = firebaseError.code;
+      const message = firebaseError.message;
+      const email = firebaseError.customData?.email;
 
-    console.log(
-      `An error ${code} occurred when logging user with email: ${email} with message: ${message}`
-    );
+      console.log(
+        `An error ${code} occurred when logging user with email: ${email} with message: ${message}`
+      );
+    } else {
+      console.error("An unknown error occurred", error);
+    }
+
     return null;
   }
 };

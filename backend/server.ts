@@ -3,11 +3,7 @@ import fetch from "node-fetch";
 import cors from "cors";
 import express, { Express, Request, Response } from "express";
 import { getEateryDetails } from "./api/eateryApi";
-import { 
-    addReview,
-    deleteReview,
-    updateReview
-} from "./api/reviewApi";
+import { addReview, deleteReview, updateReview, getReviews, } from "./api/reviewApi";
 
 
 const app: Express = express();
@@ -97,6 +93,33 @@ app.put("/api/updateReview/:eateryId/:reviewId", async (req, res) => {
     });
   }
 });
+
+// get reviews
+app.get("/api/getReviews/:eateryId", async (req, res) => {
+  console.log("[GET] entering '/api/getReviews/:eateryId' endpoint");
+  const eateryId: string = req.params.eateryId;
+
+  try {
+    // Fetch reviews from Firestore using the getReviews function
+    const reviews = await getReviews(eateryId);
+
+    if (reviews.length === 0) {
+      res.status(404).send({
+        error: `ERROR: No reviews found for eateryId: ${eateryId}`,
+      });
+    } else {
+      res.status(200).send({
+        message: `SUCCESS retrieved reviews for eateryId: ${eateryId}`,
+        data: reviews,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: `ERROR: an error occurred in the /api/getReviews/:eateryId endpoint: ${err}`,
+    });
+  }
+});
+
 
 app.listen(8080, () => {
     console.log("Server is running on http://localhost:8080");

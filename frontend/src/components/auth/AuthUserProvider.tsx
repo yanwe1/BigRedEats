@@ -1,5 +1,5 @@
 // other imports
-//import { WrappedComponentProps } from 'react-with-firebase-auth';
+// import { WrappedComponentProps } from 'react-with-firebase-auth';
 import { User } from "firebase/auth";
 import { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "./firebaseConfig"

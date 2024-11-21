@@ -1,4 +1,3 @@
-//import { db } from '../firebaseConfig';
 import { db } from '../firebase';
 import * as firebase from 'firebase-admin';
 
@@ -68,3 +67,27 @@ export const updateReview = async (review : string, updateData : ReviewForm) => 
             throw new Error("Failed to update review");
         }
 };
+
+// Fetch all reviews for a specific eateryId
+export const getReviews = async (eateryId: string) => {
+    try {
+      // Query the 'reviews' collection for documents where 'eateryId' matches
+      const reviewsSnapshot = await db
+        .collection('reviews')
+        .where('eateryId', '==', eateryId)
+        .orderBy('timestamp', 'desc') // Optional: order by most recent first
+        .get();
+  
+      // Extract and return the reviews data
+      const reviews = reviewsSnapshot.docs.map(doc => ({
+        id: doc.id, // Include the document ID for reference
+        ...doc.data(),
+      }));
+  
+      return reviews;
+    } catch (error) {
+      console.error("Error fetching reviews: ", error);
+      throw new Error("Failed to fetch reviews");
+    }
+  };
+  
