@@ -11,7 +11,7 @@ export interface ReviewForm {
 export const addReview = async (eateryId : string, reviewData : ReviewForm) => {
     try {
         // create a new document in the 'reviews' collection
-        const reviewRef = db.collection('reviews').doc();
+        const reviewRef = db.collection('reviews').doc(eateryId).collection('reviews').doc()
 
         // create review data with set function and stores in firestore doc; link it to eateryId
         await reviewRef.set({
@@ -73,8 +73,8 @@ export const getReviews = async (eateryId: string) => {
     try {
       // Query the 'reviews' collection for documents where 'eateryId' matches
       const reviewsSnapshot = await db
-        .collection('reviews')
-        .where('eateryId', '==', eateryId)
+        .collection('reviews/' + eateryId + "/reviews")
+        // .where('eateryId', '==', eateryId)
         .orderBy('timestamp', 'desc') // Optional: order by most recent first
         .get();
   
