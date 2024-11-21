@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { signIn, signOut} from '../../../backend/auth' 
+//import { signIn, signOut} from '../components/auth/auth' 
 
-<button onClick={signIn}> Sign In</button>;
+{/* <Button onClick={signIn}> Sign In</Button>;
+<Button onClick={signOut}> Sign In</Button>; */}
 
 interface Eatery {
     id: number;

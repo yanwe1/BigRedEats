@@ -9,5 +9,5 @@
         "outDir": "./dist",
         "esModuleInterop": true
     },
-    "include": ["*.ts"]
+    "include": ["*.ts", "../frontend/src/components/auth/auth.ts"]
 }

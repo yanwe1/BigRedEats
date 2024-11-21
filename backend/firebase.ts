@@ -1,11 +1,8 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp, applicationDefault, cert } from "firebase-admin/app";
+import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from 'firebase-admin/firestore';
 import { getAuth } from "firebase/auth";
-import withFirebaseAuth from 'react-with-firebase-auth';
-import { GoogleAuthProvider } from "firebase/auth";
-
-
+import { ServiceAccount } from "firebase-admin";
 import serviceAccount from "./service_account.json";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -27,17 +24,17 @@ const firebaseConfig = {
 //   databaseURL: 'https://final-project-74749.firebaseio.com'
 // });
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp({
+  credential: cert(serviceAccount as ServiceAccount),
+});
 
 // Initialize Firebase Auth
-const auth = getAuth(app);
+const auth = getAuth();
 
 // export firebase instances for easy access
-const db = getFirestore(app);
-
-
+const db = getFirestore();
 
 export { 
   db,
-  auth,
+  auth
  };
