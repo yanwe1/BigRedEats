@@ -24,6 +24,7 @@ const EateryInfoPage: React.FC = () => {
     
     // Reviews
     const [reviews, setReviews] = useState<Review[]>([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
 
     useEffect(() => {
@@ -86,6 +87,18 @@ const EateryInfoPage: React.FC = () => {
         }
     };
 
+    // Filter eatery and reviews based on search query
+    // const filteredEateries = eatery && (
+    //     eatery.name.toLowerCase().includes(searchQuery.toLowerCase())
+    //     //eatery.description.toLowerCase().includes(searchQuery.toLowerCase())
+    // );
+
+    const filteredReviews = reviews.filter(
+        (review) =>
+            review.comment.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            review.userName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <div>
             {eatery ? (
@@ -94,20 +107,28 @@ const EateryInfoPage: React.FC = () => {
                     <p>{eatery.location}</p>
                     <img src={eatery.imageLink} alt={eatery.name}/>
                     <h3>Reviews:</h3>
-                    {reviews.length > 0 ? (
-                         reviews.map((review) => (
+                    {/*Make search bar*/}
+                    <input
+                        type="text"
+                        placeholder="Search reviews..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+
+                    // Show filtered reviews
+                    {filteredReviews.length > 0 ? (
+                        filteredReviews.map((review) => (
                             <div key={review.id}>
                                 <h4>{review.userName}: {review.rating} stars</h4>
                                 <p>{review.comment}</p>
                             </div>
                         ))
                     ) : (
-                        <p>No reviews yet</p>
+                        <p>No reviews match search.</p>
                     )}
 
+                    {/* Submit review*/}
                     {eateryId && <Review eateryId={eateryId} onReviewSubmit={handleReviewSubmit} />}    
-
-                    
                 </div>
                 ) : (
                  <p>Loading eatery...</p>
