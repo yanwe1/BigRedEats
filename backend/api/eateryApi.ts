@@ -1,8 +1,12 @@
 import { db } from '../firebase';
 
-// get morrison details by id
+// Get dining hall details by id
 export const getEateryDetails = async (eateryId: string) => {
-    const doc = await db.collection('eateries').doc(eateryId).get();
-    return doc.exists ? doc.data() : null;
-}
-;
+    try {
+        const doc = await db.collection('eateries').doc(eateryId).get();
+        return doc.exists ? doc.data() : null;
+    } catch (error) {
+        console.error("Error fetching eatery details: ", error);
+        throw new Error("Failed to fetch eatery details");
+    }
+};

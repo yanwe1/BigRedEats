@@ -1,5 +1,5 @@
-import path from "path";
-import fetch from "node-fetch";
+//import path from "path";
+//import fetch from "node-fetch";
 import cors from "cors";
 import express, { Express, Request, Response } from "express";
 import { getEateryDetails } from "./api/eateryApi";
@@ -66,7 +66,7 @@ app.delete("/api/deleteReview/:eateryId/:reviewId", async (req, res) => {
   //const eateryId: string =
 
   try {
-    await deleteReview(reviewId);
+    await deleteReview(eateryId, reviewId);
     res.status(204).send();
   } catch (err) {
     res.status(500).json({
@@ -78,14 +78,14 @@ app.delete("/api/deleteReview/:eateryId/:reviewId", async (req, res) => {
 // updateReview
 app.put("/api/updateReview/:eateryId/:reviewId", async (req, res) => {
   console.log("[PUT] entering '/api/updateReview/:eateryId/:reviewId' endpoint");
-  const { eateryId} = req.params; // Get eatery ID and review ID from the route
+  const { eateryId, reviewId } = req.params; // Get eatery ID and review ID from the route
   const {userId, rating, comment } = req.body; // Extract the fields to update from the request body
 
   try {
-    const review = {userId, rating, comment }
-    await updateReview(eateryId, review);
+    const review = { userId, rating, comment }
+    await updateReview(eateryId, reviewId, review);
     res.status(200).send({
-      message: `SUCCESS Updated review with ID ${review} for eateryID: ${eateryId}`,
+      message: `SUCCESS Updated review with ID ${reviewId} for eateryID: ${eateryId}`,
     });
   } catch (err) {
     res.status(500).json({

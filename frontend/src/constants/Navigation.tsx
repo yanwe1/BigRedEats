@@ -1,5 +1,6 @@
-import Review from "../pages/Review";
-import EateryInfoPage from "../pages/EateryInfoPage";
+import Review from "../pages/Review";  // Review page still included
+import MorrisonDining from "../pages/MorrisonDining";  // MorrisonDining page
+import NorthStar from "../pages/NorthStar";  // NorthStar page
 import HomePage from "../pages/Home";
 
 /**
@@ -27,21 +28,18 @@ export const PATHS: {
         element: <HomePage />,
     },
     {
-        link: "/review",
-        label: "Review",
-        element: (
-            <Review
-                eateryId = "morrisonDining"
-                onReviewSubmit={() => {
-                    console.log('Review submitted');
-                    // Optionally, trigger an update for reviews here
-                }}
-            />
-        ),
+        link: "/morrison",
+        label: "Morrison Dining",
+        element: <MorrisonDining />,
     },
     {
-        link: "/eateryId",
-        label: "EateryInfoPage",
-        element: <EateryInfoPage />,
+        link: "/northstar",
+        label: "NorthStar Dining",
+        element: <NorthStar />,
+    },
+    {
+        link: "/review/:eateryId",  // Dynamic link for Review page
+        label: "Review",
+        element: <Review onReviewSubmit={() => { console.log('Review submitted'); }} />,
     },
 ];

@@ -14,9 +14,14 @@
     "packageManager": "pnpm@8.6.10",
     "name": "full-stack",
     "dependencies": {
+        "@emotion/serialize": "^1.3.3",
+        "@radix-ui/react-slot": "^1.1.0",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.1",
         "firebase": "^9.17.2",
         "react": "^18.2.0",
         "react-router-dom": "^6.15.0",
-        "react-with-firebase-auth": "^1.4.1"
+        "react-with-firebase-auth": "^1.4.1",
+        "tailwind-merge": "^2.5.4"
     }
 }

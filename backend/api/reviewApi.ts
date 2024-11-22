@@ -5,89 +5,82 @@ export interface ReviewForm {
     rating: number;
     comment: string;
     userId: string;
-  }
+}
 
-// add a new review to firestore dynamically using eateryId parameter
-export const addReview = async (eateryId : string, reviewData : ReviewForm) => {
+// Add a new review to Firestore dynamically using eateryId parameter
+export const addReview = async (eateryId: string, reviewData: ReviewForm) => {
     try {
-        // create a new document in the 'reviews' collection
-        const reviewRef = db.collection('reviews').doc(eateryId).collection('reviews').doc()
+        // Create a new document in the 'reviews' collection, nested under the eateryId
+        const reviewRef = db.collection('reviews').doc(eateryId).collection('reviews').doc();
 
-        // create review data with set function and stores in firestore doc; link it to eateryId
+        // Store the review data in Firestore under the eateryId
         await reviewRef.set({
-            ...reviewData, // includes key value pairs in the object to be saved in document
-            eateryId: eateryId, // reference the specific eatery
+            ...reviewData, // Includes key-value pairs in the object to be saved
+            eateryId: eateryId, // Reference the specific eatery
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
         return reviewRef.id;
-    }
-
-    catch (error) {
+    } catch (error) {
         console.error("Error adding review: ", error);
         throw new Error("Failed to add review");
     }
-}
+};
 
-// delete a review from firestore by reviewid
-export const deleteReview = async (review: string) => {
+// Delete a review from Firestore by reviewId
+export const deleteReview = async (eateryId: string, reviewId: string) => {
     try {
-        // reference to the specific review document in the 'reviews' collection
-        const reviewRef = db.collection('reviews').doc(review);
+        // Reference to the specific review document in the 'reviews' collection for a given eatery
+        const reviewRef = db.collection('reviews').doc(eateryId).collection('reviews').doc(reviewId);
 
-        // delete the review document
+        // Delete the review document
         await reviewRef.delete();
-
-        console.log(`Review with ID ${review} successfully deleted.`);
-
-    }
-
-    catch (error) {
+        console.log(`Review with ID ${reviewId} successfully deleted.`);
+    } catch (error) {
         console.error("Error deleting review: ", error);
         throw new Error("Failed to delete review");
     }
 };
 
-// update a review in firestore by review
-export const updateReview = async (review : string, updateData : ReviewForm) => {
+// Update a review in Firestore by reviewId
+export const updateReview = async (eateryId: string, reviewId: string, updateData: ReviewForm) => {
     try {
-        // reference to the specific review document in the 'reviews' collection
-        const reviewRef = db.collection('reviews').doc(review);
+        // Reference to the specific review document in the 'reviews' collection for a given eatery
+        const reviewRef = db.collection('reviews').doc(eateryId).collection('reviews').doc(reviewId);
 
-        // update the review document with new data
+        // Update the review document with new data
         await reviewRef.update({
             ...updateData,
             lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
         });
-       
-        console.log(`Review with ID ${review} successfully updated.`);
+
+        console.log(`Review with ID ${reviewId} successfully updated.`);
+    } catch (error) {
+        console.error("Error updating review: ", error);
+        throw new Error("Failed to update review");
     }
-        catch (error) {
-            console.error("Error updating review: ", error);
-            throw new Error("Failed to update review");
-        }
 };
 
 // Fetch all reviews for a specific eateryId
 export const getReviews = async (eateryId: string) => {
     try {
-      // Query the 'reviews' collection for documents where 'eateryId' matches
-      const reviewsSnapshot = await db
-        .collection('reviews/' + eateryId + "/reviews")
-        // .where('eateryId', '==', eateryId)
-        .orderBy('timestamp', 'desc') // Optional: order by most recent first
-        .get();
-  
-      // Extract and return the reviews data
-      const reviews = reviewsSnapshot.docs.map(doc => ({
-        id: doc.id, // Include the document ID for reference
-        ...doc.data(),
-      }));
-  
-      return reviews;
+        // Query the 'reviews' collection for documents under the specific eateryId
+        const reviewsSnapshot = await db
+            .collection('reviews')
+            .doc(eateryId)
+            .collection('reviews')
+            .orderBy('timestamp', 'desc') // Optional: Order by most recent first
+            .get();
+
+        // Extract and return the reviews data
+        const reviews = reviewsSnapshot.docs.map(doc => ({
+            id: doc.id, // Include the document ID for reference
+            ...doc.data(),
+        }));
+
+        return reviews;
     } catch (error) {
-      console.error("Error fetching reviews: ", error);
-      throw new Error("Failed to fetch reviews");
+        console.error("Error fetching reviews: ", error);
+        throw new Error("Failed to fetch reviews");
     }
-  };
-  
+};

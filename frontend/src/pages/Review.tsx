@@ -1,92 +1,95 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';  // Import useParams hook
 
 interface ReviewForm {
-    eateryId: string;
-    onReviewSubmit: (newReview: { userName: string; comment: string; rating: number }) => void;
+  onReviewSubmit: (newReview: { userName: string; comment: string; rating: number }) => void;
 }
 
-const Review: React.FC<ReviewForm> = ({ eateryId, onReviewSubmit }) => {
-    const [userName, setUserName] = useState('');
-    const [comment, setComment] = useState('');
-    const [rating, setRating] = useState(0); // allows 0 stars
+const Review: React.FC<ReviewForm> = ({ onReviewSubmit }) => {
+  const { eateryId } = useParams<{ eateryId: string }>();  // Get the eateryId from the URL
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        const newReview = { userName, comment, rating };
+  const [userName, setUserName] = useState('');
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(1); // Default rating of 1
 
-        try {
-            // Use the fetch API to send the POST request to the Express server
-            const response = await fetch(`http://localhost:8080/api/eateries/${eateryId}/reviews`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newReview),
-            });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-            if (response.ok) {
-                onReviewSubmit(newReview); // Update reviews on successful submission
+    const newReview = { userName, comment, rating };
 
-                // Reset the form fields
-                setUserName('');
-                setComment('');
-                setRating(0);
-            } else {
-                console.error('Error submitting review:', response.statusText);
-            }
-        } catch (error) {
-            console.error('There was an error submitting your review:', error);
-        }
-    };
+    try {
+      // Send the POST request with the review data to the server
+      const response = await fetch(`https://BigRedEats.fly.dev/api/addReview/${eateryId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newReview),
+      });
 
-    return (
-        <div>
-            <center>
-                <h1 style={{ color: '#FF1493' }}>Review Submission!</h1>
-            </center>
-        
-            <div className="review-container">
-                <h2>Submit Your Review</h2>
-                <form onSubmit={handleSubmit} className="review-form">
-                    <div className="form-group">
-                        <label htmlFor="userName">Your Name</label>
-                        <input
-                            type="text"
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            placeholder="Name..."
-                        />
-                    </div>
+      if (response.ok) {
+        onReviewSubmit(newReview); // Update reviews on successful submission
+        setUserName('');
+        setComment('');
+        setRating(1); // Reset the form
+      } else {
+        console.error('Error submitting review:', response.statusText);
+      }
+    } catch (error) {
+      console.error('There was an error submitting your review:', error);
+    }
+  };
 
-                    <div className="form-group">
-                        <label htmlFor="comment">Review</label>
-                        <textarea
-                            id="comment"
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            placeholder="Review..."
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="rating">Rating (0-5)</label>
-                        <input
-                            type="number"
-                            id="rating"
-                            value={rating}
-                            onChange={(e) => setRating(Number(e.target.value))}
-                            placeholder="Rating"
-                            min="0"
-                            max="5"
-                            required
-                        />
-                    </div>
+  return (
+    <div>
+      <center>
+        <h1 style={{ color: '#FF1493' }}>Review Submission for {eateryId}</h1>
+      </center>
 
-                    <button type="submit">Submit Review</button>
-                </form>
-            </div>
-        </div>
-    );
+      <div className="review-container">
+        <h2>Submit Your Review</h2>
+        <form onSubmit={handleSubmit} className="review-form">
+          <div className="form-group">
+            <label htmlFor="userName">Your Name</label>
+            <input
+              type="text"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Name..."
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="comment">Review</label>
+            <textarea
+              id="comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Review..."
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="rating">Rating (1-5)</label>
+            <input
+              type="number"
+              id="rating"
+              value={rating}
+              onChange={(e) => setRating(Number(e.target.value))}
+              placeholder="Rating"
+              min="1"
+              max="5"
+              required
+            />
+          </div>
+
+          <button type="submit">Submit Review</button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default Review;
