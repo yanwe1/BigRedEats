@@ -2,7 +2,7 @@
 // import { WrappedComponentProps } from 'react-with-firebase-auth';
 import { User } from "firebase/auth";
 import { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "./firebaseConfig"
+import { auth } from './firebaseConfig';
 
 type AuthData = {
   user: User | null;
