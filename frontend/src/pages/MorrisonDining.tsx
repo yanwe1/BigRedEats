@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../../../backend/firebase';
+import { db } from '../components/auth/firebaseConfig';
+import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore';
+
 
 const MorrisonDining: React.FC = () => {
-  const [morrisonInfo, setMorrisonInfo] = useState<any>(null);
+  const [morrisonInfo, setMorrisonInfo] = useState<any[]>([]);
   const [morrisonReviews, setMorrisonReviews] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -10,8 +12,9 @@ const MorrisonDining: React.FC = () => {
     // Fetch Morrison Dining info from Firestore
     const fetchMorrisonData = async () => {
       try {
-        const snapshot = await db.collection('morrisonDining').get();
-        const data = snapshot.docs.map(doc => doc.data());
+        const morrisonCollection = collection(db, 'morrisonDining');
+        const snapshot = await getDocs(morrisonCollection);
+        const data = snapshot.docs.map((doc) => doc.data());
         setMorrisonInfo(data);
       } catch (error) {
         console.error('Error fetching Morrison Dining data:', error);
@@ -21,13 +24,10 @@ const MorrisonDining: React.FC = () => {
     // Fetch reviews for Morrison from Firestore
     const fetchMorrisonReviews = async () => {
       try {
-        const snapshot = await db
-          .collection('morrisonDining')
-          .doc('reviews')
-          .collection('reviews')
-          .get();
-
-        const reviews = snapshot.docs.map(doc => doc.data());
+        const reviewsDocRef = doc(db, 'morrisonDining', 'reviews');
+        const reviewsCollection = collection(reviewsDocRef, 'reviews');
+        const snapshot = await getDocs(reviewsCollection);
+        const reviews = snapshot.docs.map((doc) => doc.data());
         setMorrisonReviews(reviews);
       } catch (error) {
         console.error('Error fetching Morrison reviews:', error);
@@ -41,23 +41,14 @@ const MorrisonDining: React.FC = () => {
   // Handle review submission
   const handleReviewSubmit = async (newReview: { userName: string; rating: number; comment: string }) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/addReview/morrisonDining`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newReview),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const createdReview = data.data;
-        setMorrisonReviews((prevReviews) => [...prevReviews, createdReview]);
-      } else {
-        console.error('Error adding review');
+      const reviewsDocRef = doc(db, 'morrisonDining', 'reviews');
+      const reviewsCollection = collection(reviewsDocRef, 'reviews');
+      const response = await addDoc(reviewsCollection, newReview);
+      if (response) {
+        setMorrisonReviews((prevReviews) => [...prevReviews, newReview]);
       }
     } catch (error) {
-      console.error('There was an error submitting the review:', error);
+      console.error('Error adding review:', error);
     }
   };
 
@@ -71,7 +62,7 @@ const MorrisonDining: React.FC = () => {
   return (
     <div>
       <h1>Morrison Dining</h1>
-      {morrisonInfo ? (
+      {morrisonInfo.length > 0 ? (
         <div>
           {morrisonInfo.map((item: any, index: number) => (
             <div key={index}>
@@ -95,7 +86,9 @@ const MorrisonDining: React.FC = () => {
       {filteredReviews.length > 0 ? (
         filteredReviews.map((review, index) => (
           <div key={index}>
-            <h4>{review.userName}: {review.rating} stars</h4>
+            <h4>
+              {review.userName}: {review.rating} stars
+            </h4>
             <p>{review.comment}</p>
           </div>
         ))
