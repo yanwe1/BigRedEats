@@ -1,36 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { db } from '../../../backend/firebase';
+import { db } from '../components/auth/firebaseConfig';
+import { collection, getDocs, doc, addDoc } from 'firebase/firestore';
 
 const NorthStar: React.FC = () => {
-  const [northStarInfo, setNorthStarInfo] = useState<any>(null);
+  const [northStarInfo, setNorthStarInfo] = useState<any[]>([]);
   const [northStarReviews, setNorthStarReviews] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    // Fetch NorthStar dining hall info from Firestore
+    // Fetch North Star Dining Hall info from Firestore
     const fetchNorthStarData = async () => {
       try {
-        const snapshot = await db.collection('northStar').get();
-        const data = snapshot.docs.map(doc => doc.data());
+        const northStarCollection = collection(db, 'northStar');
+        const snapshot = await getDocs(northStarCollection);
+        const data = snapshot.docs.map((doc) => doc.data());
         setNorthStarInfo(data);
       } catch (error) {
-        console.error('Error fetching NorthStar data:', error);
+        console.error('Error fetching North Star data:', error);
       }
     };
 
-    // Fetch reviews for NorthStar from Firestore
+    // Fetch reviews for North Star from Firestore
     const fetchNorthStarReviews = async () => {
       try {
-        const snapshot = await db
-          .collection('northStar')
-          .doc('reviews')
-          .collection('reviews')
-          .get();
-
-        const reviews = snapshot.docs.map(doc => doc.data());
+        const reviewsDocRef = doc(db, 'northStar', 'reviews');
+        const reviewsCollection = collection(reviewsDocRef, 'reviews');
+        const snapshot = await getDocs(reviewsCollection);
+        const reviews = snapshot.docs.map((doc) => doc.data());
         setNorthStarReviews(reviews);
       } catch (error) {
-        console.error('Error fetching NorthStar reviews:', error);
+        console.error('Error fetching North Star reviews:', error);
       }
     };
 
@@ -41,23 +40,15 @@ const NorthStar: React.FC = () => {
   // Handle review submission
   const handleReviewSubmit = async (newReview: { userName: string; rating: number; comment: string }) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/addReview/northStar`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newReview),
-      });
+      const reviewsDocRef = doc(db, 'northStar', 'reviews');
+      const reviewsCollection = collection(reviewsDocRef, 'reviews');
+      const response = await addDoc(reviewsCollection, newReview);
 
-      if (response.ok) {
-        const data = await response.json();
-        const createdReview = data.data;
-        setNorthStarReviews((prevReviews) => [...prevReviews, createdReview]);
-      } else {
-        console.error('Error adding review');
+      if (response) {
+        setNorthStarReviews((prevReviews) => [...prevReviews, newReview]);
       }
     } catch (error) {
-      console.error('There was an error submitting the review:', error);
+      console.error('Error adding review:', error);
     }
   };
 
@@ -71,7 +62,7 @@ const NorthStar: React.FC = () => {
   return (
     <div>
       <h1>North Star Dining</h1>
-      {northStarInfo ? (
+      {northStarInfo.length > 0 ? (
         <div>
           {northStarInfo.map((item: any, index: number) => (
             <div key={index}>
@@ -95,7 +86,9 @@ const NorthStar: React.FC = () => {
       {filteredReviews.length > 0 ? (
         filteredReviews.map((review, index) => (
           <div key={index}>
-            <h4>{review.userName}: {review.rating} stars</h4>
+            <h4>
+              {review.userName}: {review.rating} stars
+            </h4>
             <p>{review.comment}</p>
           </div>
         ))
