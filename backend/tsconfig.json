@@ -2,12 +2,11 @@
     "compilerOptions": {
         "target": "ES2020",
         "module": "CommonJS",
-        "resolveJsonModule": true, //delete
-        "moduleResolution": "node", //delete
         "strict": true,
         "declaration": true,
         "outDir": "./dist",
         "esModuleInterop": true
     },
-    "include": ["*.ts", "../frontend/src/components/auth/auth.ts"]
+    "include": ["*.ts", "../frontend/src/components/auth/auth.ts"],
+    "exclude": ["../frontend/**/*", "node_modules"]
 }

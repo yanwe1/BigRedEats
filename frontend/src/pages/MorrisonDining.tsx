@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../components/auth/firebaseConfig';
-import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, addDoc } from 'firebase/firestore';
 
 
 const MorrisonDining: React.FC = () => {
