@@ -60,21 +60,15 @@ const MorrisonDining: React.FC = () => {
   );
 
   return (
-    <div>
+    <div style={{ paddingLeft: '20px' }}>
       <h1>Morrison Dining</h1>
-      {morrisonInfo.length > 0 ? (
-        <div>
-          {morrisonInfo.map((item: any, index: number) => (
-            <div key={index}>
-              <h2>{item.name}</h2>
-              <p>{item.description}</p>
-              <img src={item.imageLink} alt={item.name} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>Loading Morrison Dining information...</p>
-      )}
+          <img
+            src={"/images/morrison.jpg"} // Local image 
+            style={{ width: '500px', height: 'auto' }}
+          />
+        <p>Location: Toni Morrison Hall</p>
+        <p>Choose your own culinary adventure at Cornell's newest dining room.</p>
+      
 
       <h2>Reviews:</h2>
       <input

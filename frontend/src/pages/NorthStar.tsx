@@ -60,21 +60,15 @@ const NorthStar: React.FC = () => {
   );
 
   return (
-    <div>
+    <div style={{ paddingLeft: '20px' }}>
       <h1>North Star Dining</h1>
-      {northStarInfo.length > 0 ? (
-        <div>
-          {northStarInfo.map((item: any, index: number) => (
-            <div key={index}>
-              <h2>{item.name}</h2>
-              <p>{item.description}</p>
-              <img src={item.imageLink} alt={item.name} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>Loading North Star Dining information...</p>
-      )}
+          <img
+            src={"/images/northStar.jpg"} // Local image 
+            style={{ width: '500px', height: 'auto' }}
+          />
+        <p>Location: Appel Commons, Third floor</p>
+        <p>Dining room located in Appel Commons on North Campus.</p>
+      
 
       <h2>Reviews:</h2>
       <input
