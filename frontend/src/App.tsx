@@ -4,9 +4,11 @@ import ErrorPage from "./pages/Error";
 import RootLayout from "./layouts/RootLayout";
 import { PATHS } from "./constants/Navigation";
 import { AuthUserProvider } from './components/auth/AuthUserProvider'; // Import AuthUserProvider
-import HomePage from './pages/Home'; // Import HomePage
+import SignInPage from './pages/SignInPage'; // Import SignInPage
+import Home from './pages/Home'
 import MorrisonDining from './pages/MorrisonDining'; // Import MorrisonDining page
 import NorthStar from './pages/NorthStar'; // Import NorthStar page
+
 
 import "./index.css";
 
@@ -20,7 +22,12 @@ const router = createBrowserRouter([
             // Add the HomePage route
             {
                 path: "/",
-                element: <HomePage />,
+                element: <SignInPage />,
+            },
+            // New Home Page route after successful sign-in
+            {   
+                path: "/home",
+                element: <Home />,  // Redirected home page
             },
             // Add the Morrison Dining route
             {

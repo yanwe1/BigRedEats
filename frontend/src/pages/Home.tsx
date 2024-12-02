@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { signIn } from '../components/auth/auth';
+import { signIn, signOut } from '../components/auth/auth';
 import { Button } from "../components/button";
 
 <Button onClick={signIn}>Sign In</Button>;
+<Button onClick={signOut}>Sign Out</Button>;
+
 
 const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+  
   return (
     <div style={{ paddingLeft: '20px', paddingRight: '20px'}}>
       <center>
@@ -17,7 +23,7 @@ const HomePage: React.FC = () => {
         type="text"
         placeholder="Search Eateries"
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={handleSearchChange}
       />
       <div>
         <div>
