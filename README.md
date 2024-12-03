@@ -1,71 +1,95 @@
-# full-stack
+# Cornell North Campus Eateries
 
-A "standard" yet modern full-stack TypeScript web-application template using React/Vite on the frontend and Express on the backend, bundled with Turborepo.
+This is a web app that allows Cornell University students to view and submit reviews for North Campus dining locations. Users can sign in using their Google account and explore different eateries on North Campus, such as **Morrison Dining** and **North Star Dining**. Reviews are stored in a Firebase Firestore database.
 
-## Using this example
+---
 
-Run the following command:
+## Features
 
-```sh
-pnpm install
-pnpm build
-pnpm dev
-```
+- **Google Sign-In**: Securely sign in with your Google account.
+- **Dining Locations**: Explore eateries on Cornell's North Campus, including Morrison Dining and North Star Dining.
+- **Reviews**: View, search, and submit reviews for the dining locations.
+- **Responsive Design**: The app is optimized for mobile and desktop devices.
 
-The server will be available at `http://localhost:8080`.
-The client will be available at `http://localhost:5173`.
+---
 
-## What's inside?
+## Tech Stack
 
--   [TypeScript](https://www.typescriptlang.org/) for static type checking
--   [Turborepo](https://turbo.build/repo) for monorepo management
+- **Frontend**:
+  - React
+  - React Router 
+  - Mantine 
+- **Backend**:
+  - Firebase Authentication 
+  - Firebase Firestore 
 
-On the frontend:
+---
 
--   [Vite](https://vitejs.dev/) for frontend development
--   [React](https://reactjs.org/) for frontend UI
--   [React Router](https://reactrouter.com/) for frontend routing
--   [Mantine](https://mantine.dev/) for frontend UI components
--   [Lucide](https://lucide.dev/) for frontend icons
+## Project Structure
 
-On the backend:
+The project has two primary parts:
 
--   [Express](https://expressjs.com/) for backend development
+- **Frontend**:
+  - The frontend is built with React and uses Mantine for UI components. It is responsible for rendering the app's user interface and interacting with the backend (Firebase).
+  - The frontend is located in the `/src` folder of the repository.
 
-## Making Edits
+- **Backend**:
+  - The backend is managed by Firebase, specifically using Firebase Authentication and Firestore.
+  - Firebase is used for authenticating users (via Google sign-in) and storing/retrieving reviews from the Firestore database.
 
-To edit the frontend, `cd` into `frontend` and make changes as you would normally in a standard React app.
+---
 
-To edit the backend, `cd` into `backend` and make changes as you would normally in a standard Express server.
+## Setup and Running Locally
 
-To edit types that are _shared_ between the frontend and backend, `cd` into `lib/types`, and put your types in `index.ts`. You can put miscellaneous types here that you want to share between the frontend and backend in the `src` directory within. Don't forget to export them!
+### 1. Clone the Repository
 
-## Deploying
+First, clone the repository to your local machine:
 
-We recommend using [Fly.io](https://fly.io/) for deployment.
+```bash
+git clone https://github.com/yanwe1/BigRedEats.git
+cd BigRedEats
 
-As a fair warning, this will require a credit card. However, you shouldn't get charged for it, as Fly.io has a generous free tier.
+### 2. Install Dependencies
 
-1. Make an account on [Fly.io](https://fly.io/)
+After cloning the repository, run the following command to install all the required dependencies for the project:
 
-2. Install [flyctl](https://fly.io/docs/hands-on/install-flyctl/)
+```bash
+npm install
 
-3. Run `flyctl auth login`
+### Firebase Setup
 
-    You may be prompted to add a credit card at this stage. We recommend doing so in order to proceed.
+To connect your project to Firebase, follow these steps:
 
-4. Run `flyctl launch`
+#### 1. Create a Firebase Project
 
-    If asked to tweak settings, answer 'N' unless you know what you're doing.
+- Go to [Firebase Console](https://console.firebase.google.com/), click on **"Add Project"** and follow the setup instructions.
 
-    After launching, the terminal should print the URL at which your app is publicly available.
+#### 2. Enable Google Authentication
 
-5. Modify the `BACKEND_BASE_PATH` variable.
+- In the Firebase console, go to **Authentication > Sign-in method**, and enable **Google sign-in**.
 
-    If you haven't already, go to `/frontend/src/constants/Navigation.tsx` and read the `TODO` instructions left there. Then, make the changes accordingly.
+#### 3. Set Up Firestore
 
-6. Run `flyctl deploy` to re-deploy changes to your app to the same URL.
+- Go to **Firestore Database > Create Database** and set it to **Test mode**.
 
-### Debugging
+#### 4. Get Firebase Config
 
-If your deployment launch name gets too long. Try going into your (fly.io)[https://fly.io] dashboard and go to `Apps` then delete any current apps you may currently have. Then go back to the console and run `flyctl launch` when asked "Do you want to tweak these settings before proceeding?" type "y" and then change the name to your desired name.
+- Go to **Project Settings > General > Firebase SDK Setup and Configuration**.
+- Copy the Firebase config and create a `.env` file at the root of your project with the following variables:
+
+```env
+REACT_APP_FIREBASE_API_KEY=your-api-key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your-auth-domain
+REACT_APP_FIREBASE_PROJECT_ID=your-project-id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your-storage-bucket
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your-messaging-sender-id
+REACT_APP_FIREBASE_APP_ID=your-app-id
+
+## 3. Starting the App Locally
+
+After setting up the dependencies and Firebase configuration, run the following command to start the development server:
+
+```bash
+# Start the app locally
+npm start
+
