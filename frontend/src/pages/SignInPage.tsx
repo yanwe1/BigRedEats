@@ -12,6 +12,8 @@ export default function Home() {
     navigate('/home');
   };
 
+  
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-4 bg-gray-100">
       {/* Title */}

@@ -3,23 +3,10 @@ import { db } from '../components/auth/firebaseConfig';
 import { collection, getDocs, doc, addDoc } from 'firebase/firestore';
 
 const NorthStar: React.FC = () => {
-  const [northStarInfo, setNorthStarInfo] = useState<any[]>([]);
   const [northStarReviews, setNorthStarReviews] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    // Fetch North Star Dining Hall info from Firestore
-    const fetchNorthStarData = async () => {
-      try {
-        const northStarCollection = collection(db, 'northStar');
-        const snapshot = await getDocs(northStarCollection);
-        const data = snapshot.docs.map((doc) => doc.data());
-        setNorthStarInfo(data);
-      } catch (error) {
-        console.error('Error fetching North Star data:', error);
-      }
-    };
-
     // Fetch reviews for North Star from Firestore
     const fetchNorthStarReviews = async () => {
       try {
@@ -33,7 +20,6 @@ const NorthStar: React.FC = () => {
       }
     };
 
-    fetchNorthStarData();
     fetchNorthStarReviews();
   }, []);
 

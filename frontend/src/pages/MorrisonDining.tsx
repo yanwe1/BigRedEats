@@ -4,22 +4,10 @@ import { collection, getDocs, doc, addDoc } from 'firebase/firestore';
 
 
 const MorrisonDining: React.FC = () => {
-  const [morrisonInfo, setMorrisonInfo] = useState<any[]>([]);
   const [morrisonReviews, setMorrisonReviews] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    // Fetch Morrison Dining info from Firestore
-    const fetchMorrisonData = async () => {
-      try {
-        const morrisonCollection = collection(db, 'morrisonDining');
-        const snapshot = await getDocs(morrisonCollection);
-        const data = snapshot.docs.map((doc) => doc.data());
-        setMorrisonInfo(data);
-      } catch (error) {
-        console.error('Error fetching Morrison Dining data:', error);
-      }
-    };
 
     // Fetch reviews for Morrison from Firestore
     const fetchMorrisonReviews = async () => {
@@ -34,7 +22,6 @@ const MorrisonDining: React.FC = () => {
       }
     };
 
-    fetchMorrisonData();
     fetchMorrisonReviews();
   }, []);
 
